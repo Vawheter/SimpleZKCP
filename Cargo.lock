@@ -73,18 +73,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cookie"
-version = "0.1.21"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "02443c47d5c80f9b4be9b8f51c0bf307d663fe28b18ccabef44d8b0a4b2a967b"
-dependencies = [
- "openssl",
- "rustc-serialize",
- "time",
- "url",
-]
-
-[[package]]
 name = "encoding"
 version = "0.2.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -181,54 +169,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "284091bf8874ea6b5b97485180d3e5e9d2a98b4c646d4dc6c40e44a37f6d44fc"
 
 [[package]]
-name = "hpack"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3d2da7d3a34cf6406d9d700111b8eafafe9a251de41ae71d8052748259343b58"
-dependencies = [
- "log",
-]
-
-[[package]]
-name = "httparse"
-version = "1.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ed8e190c5c20526ecc81c46ad598ea70d73d76ed7f818cbe11d4e9360ab1f29"
-
-[[package]]
-name = "hyper"
-version = "0.6.16"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "99f86de19a680224688020785c0b62a2dccace29719847b16f1a9b22c312827f"
-dependencies = [
- "cookie",
- "httparse",
- "language-tags",
- "log",
- "mime",
- "num_cpus",
- "openssl",
- "rustc-serialize",
- "solicit",
- "time",
- "traitobject",
- "typeable",
- "unicase",
- "url",
-]
-
-[[package]]
-name = "jsonrpc"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cee8b03d2c589c8e214dfdad5c0583806b50c1af30fce6e4fe83b60bb572cbc8"
-dependencies = [
- "hyper",
- "serde",
- "strason",
-]
-
-[[package]]
 name = "kernel32-sys"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -237,18 +177,6 @@ dependencies = [
  "winapi",
  "winapi-build",
 ]
-
-[[package]]
-name = "language-tags"
-version = "0.0.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41633f9c0d99840437d1f2073c0a6dadcf1dbd28b87dda956e3d91b65f6e57a7"
-
-[[package]]
-name = "lazy_static"
-version = "0.1.15"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "547fd11b0400fbab39f7a6df53c648cfb01b977233015d9e0784d595a5a6c449"
 
 [[package]]
 name = "libc"
@@ -261,40 +189,6 @@ name = "libc"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9fe40c82db71d8e4db6910989256d407abc151586aa10b8bce68bf84108af5ce"
-
-[[package]]
-name = "libressl-pnacl-sys"
-version = "2.1.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cbc058951ab6a3ef35ca16462d7642c4867e6403520811f28537a4e2f2db3e71"
-dependencies = [
- "pnacl-build-helper",
-]
-
-[[package]]
-name = "log"
-version = "0.3.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "038b5d13189a14e5b6ac384fdb7c691a45ef0885f6d2dddbf422e6c3506b8234"
-dependencies = [
- "libc 0.2.2",
-]
-
-[[package]]
-name = "matches"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15305656809ce5a4805b1ff2946892810992197ce1270ff79baded852187942e"
-
-[[package]]
-name = "mime"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec0c2f4d901bf1d4a2192a40b4b570ae3b19c51243e549defc1de741940aa787"
-dependencies = [
- "log",
- "serde",
-]
 
 [[package]]
 name = "miniz-sys"
@@ -317,41 +211,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "num_cpus"
-version = "0.2.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8662bc744a09992bce099d65444efec4138089edf4f1f3661df0006652a6557"
-dependencies = [
- "kernel32-sys",
- "libc 0.2.2",
- "winapi",
-]
-
-[[package]]
-name = "openssl"
-version = "0.6.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "816776e562d5e95935ffb09a45442deb846c4767f1c3c3b33ec24a4b8106e11a"
-dependencies = [
- "bitflags",
- "lazy_static",
- "libc 0.1.12",
- "openssl-sys",
-]
-
-[[package]]
-name = "openssl-sys"
-version = "0.6.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "74a0b047568fe3d4f35a076d6bd3c49b5ae7da80c4df72956b3a8268020f1aab"
-dependencies = [
- "gcc",
- "libc 0.1.12",
- "libressl-pnacl-sys",
- "pkg-config",
-]
-
-[[package]]
 name = "pay-to-sudoku"
 version = "0.0.1"
 dependencies = [
@@ -361,7 +220,6 @@ dependencies = [
  "fixedbitset",
  "flate2",
  "hex",
- "jsonrpc",
  "libc 0.2.2",
  "rand",
  "rust-crypto",
@@ -369,21 +227,6 @@ dependencies = [
  "strason",
  "thread-scoped",
  "whiteread",
-]
-
-[[package]]
-name = "pkg-config"
-version = "0.3.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e22680bde24ca417a3a7fc1036ead9acf0a0af007217c955f61c0eaa903edb2f"
-
-[[package]]
-name = "pnacl-build-helper"
-version = "1.4.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "61c9231d31aea845007443d62fcbb58bb6949ab9c18081ee1e09920e0cf1118b"
-dependencies = [
- "tempdir",
 ]
 
 [[package]]
@@ -417,37 +260,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1a48546a64cae47d06885e9bccadb99d0547d877a94c5167fa451ea33a484456"
 
 [[package]]
-name = "rustc_version"
-version = "0.1.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2716645bfb54c792fe06a2b857a3fa16c40f3a803b49b799cc04cedd780ab8d"
-dependencies = [
- "semver",
-]
-
-[[package]]
-name = "semver"
-version = "0.1.20"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4f410fedcf71af0345d7607d246e7ad15faaadd49d240ee3b24e5dc21a820ac"
-
-[[package]]
 name = "serde"
 version = "0.6.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc6b43c62f340c279a3608c1e6ed7b144b1e08ee74fac2a372500dc5d576af25"
 dependencies = [
  "num",
-]
-
-[[package]]
-name = "solicit"
-version = "0.4.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "172382bac9424588d7840732b250faeeef88942e37b6e35317dce98cafdd75b2"
-dependencies = [
- "hpack",
- "log",
 ]
 
 [[package]]
@@ -467,15 +285,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1d6a2200349ab2221a712c79e797cbb814086eea4ad5d12cc5cafab5f2089d9"
 
 [[package]]
-name = "tempdir"
-version = "0.3.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0b62933a3f96cd559700662c34f8bab881d9e3540289fb4f368419c7f13a5aa9"
-dependencies = [
- "rand",
-]
-
-[[package]]
 name = "thread-scoped"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -490,48 +299,6 @@ dependencies = [
  "kernel32-sys",
  "libc 0.2.2",
  "winapi",
-]
-
-[[package]]
-name = "traitobject"
-version = "0.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "07eaeb7689bb7fca7ce15628319635758eda769fed481ecfe6686ddef2600616"
-
-[[package]]
-name = "typeable"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1410f6f91f21d1612654e7cc69193b0334f909dcf2c790c4826254fbb86f8887"
-
-[[package]]
-name = "unicase"
-version = "1.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bbbfa14335c6eddb72afe538f52cc85da62e21992c26cb13344eabfa00d3db38"
-dependencies = [
- "rustc_version",
-]
-
-[[package]]
-name = "url"
-version = "0.2.38"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cbaa8377a162d88e7d15db0cf110c8523453edcbc5bc66d2b6fffccffa34a068"
-dependencies = [
- "matches",
- "rustc-serialize",
- "uuid",
-]
-
-[[package]]
-name = "uuid"
-version = "0.1.18"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "78c590b5bd79ed10aad8fb75f078a59d8db445af6c743e55c4a53227fc01c13f"
-dependencies = [
- "rand",
- "rustc-serialize",
 ]
 
 [[package]]

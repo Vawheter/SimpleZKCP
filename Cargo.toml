@@ -3,9 +3,9 @@ authors = ["ewillbefull@gmail.com"]
 name = "pay-to-sudoku"
 version = "0.0.1"
 
-[dependencies.jsonrpc]
-version = "0.7.1"
-default-features = false
+#[dependencies.jsonrpc]
+#version = "0.7.1"
+#default-features = false
 
 [dependencies]
 bincode = "0.4.0"

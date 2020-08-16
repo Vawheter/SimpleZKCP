@@ -1,3 +1,5 @@
+ZKCP protocol with only prover and verifier. Forked from https://github.com/zcash-hackworks/pay-to-sudoku.
+
 # pay-to-sudoku
 
 **Author**: Sean Bowe
@@ -15,8 +17,6 @@ payment for paying someone to solve a sudoku puzzle.
 make
 cargo run gen 2 # generate circuit for 2^2 x 2^2 puzzle
 cargo run test 2 # test the proofs
-cargo run serve 2 # run a server on port 25519 for buying solutions
-cargo run client 2 # run a client for selling solutions
 ```
 
 # circuit description for some NxN puzzle:

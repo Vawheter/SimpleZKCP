@@ -2,7 +2,7 @@
 
 extern crate whiteread;
 extern crate libc;
-extern crate bincode;
+// extern crate bincode;
 extern crate rand;
 extern crate thread_scoped;
 extern crate hex;
@@ -12,15 +12,15 @@ extern crate flate2;
 extern crate test;
 extern crate strason;
 extern crate crypto;
-#[macro_use] extern crate jsonrpc;
+// #[macro_use] extern crate jsonrpc;
 
 use std::net::{TcpListener,TcpStream};
 use std::io::{self, Read, Write};
 use self::ffi::*;
 use self::sudoku::Sudoku;
 use self::util::*;
-use bincode::serde::{serialize_into, deserialize_from};
-use bincode::SizeLimit::Infinite;
+// use bincode::serde::{serialize_into, deserialize_from};
+// use bincode::SizeLimit::Infinite;
 use std::borrow::Cow;
 use hex::{ToHex, FromHex};
 use clap::{App, Arg, SubCommand};
@@ -34,7 +34,7 @@ use std::sync::{Arc,Mutex};
 mod sudoku;
 mod ffi;
 mod util;
-mod bitcoin;
+// mod bitcoin;
 
 fn is_number(val: String) -> Result<(), String> {
     let n = val.parse::<usize>();
@@ -54,7 +54,7 @@ fn is_number(val: String) -> Result<(), String> {
 fn main() {
     initialize();
 
-    let mut rpc = jsonrpc::client::Client::new("http://127.0.0.1:8332/".into(), Some("username".to_string()), Some("password".to_string()));
+    // let mut rpc = jsonrpc::client::Client::new("http://127.0.0.1:8332/".into(), Some("username".to_string()), Some("password".to_string()));
 
     let matches = App::new("pay-to-sudoku")
                   .subcommand(SubCommand::with_name("gen")
@@ -69,18 +69,18 @@ fn main() {
                                    .required(true)
                                    .validator(is_number))
                    )
-                  .subcommand(SubCommand::with_name("serve")
-                              .about("Opens a server for paying people to solve sudoku puzzles")
-                              .arg(Arg::with_name("n")
-                                   .required(true)
-                                   .validator(is_number))
-                   )
-                  .subcommand(SubCommand::with_name("client")
-                              .about("Connects to a server to receive payment to solve sudoku puzzles")
-                              .arg(Arg::with_name("n")
-                                   .required(true)
-                                   .validator(is_number))
-                   )
+                //   .subcommand(SubCommand::with_name("serve")
+                //               .about("Opens a server for paying people to solve sudoku puzzles")
+                //               .arg(Arg::with_name("n")
+                //                    .required(true)
+                //                    .validator(is_number))
+                //    )
+                //   .subcommand(SubCommand::with_name("client")
+                //               .about("Connects to a server to receive payment to solve sudoku puzzles")
+                //               .arg(Arg::with_name("n")
+                //                    .required(true)
+                //                    .validator(is_number))
+                //    )
                   .get_matches();
 
     if let Some(ref matches) = matches.subcommand_matches("gen") {
@@ -97,53 +97,53 @@ fn main() {
         });
     }
 
-    if let Some(ref matches) = matches.subcommand_matches("client") {
-        println!("Loading proving/verifying keys...");
-        let n: usize = matches.value_of("n").unwrap().parse().unwrap();
+    // if let Some(ref matches) = matches.subcommand_matches("client") {
+    //     println!("Loading proving/verifying keys...");
+    //     let n: usize = matches.value_of("n").unwrap().parse().unwrap();
 
-        let ctx = {
-            println!("\tProving key...");
-            let pk = decompress(&format!("{}.pk", n));
-            println!("\tVerifying key...");
-            let vk = decompress(&format!("{}.vk", n));
+    //     let ctx = {
+    //         println!("\tProving key...");
+    //         let pk = decompress(&format!("{}.pk", n));
+    //         println!("\tVerifying key...");
+    //         let vk = decompress(&format!("{}.vk", n));
 
-            println!("\tDeserializing...");
+    //         println!("\tDeserializing...");
 
-            get_context(&pk, &vk, n)
-        };
+    //         get_context(&pk, &vk, n)
+    //     };
 
-        let mut stream = TcpStream::connect("127.0.0.1:25519").unwrap();
+    //     let mut stream = TcpStream::connect("127.0.0.1:25519").unwrap();
 
-        handle_server(&mut stream, &ctx, n, &mut rpc);
-    }
+    //     handle_server(&mut stream, &ctx, n, &mut rpc);
+    // }
 
-    if let Some(ref matches) = matches.subcommand_matches("serve") {
-        println!("Loading proving/verifying keys...");
-        let n: usize = matches.value_of("n").unwrap().parse().unwrap();
+    // if let Some(ref matches) = matches.subcommand_matches("serve") {
+    //     println!("Loading proving/verifying keys...");
+    //     let n: usize = matches.value_of("n").unwrap().parse().unwrap();
 
-        let ctx = {
-            println!("\tProving key...");
-            let pk = decompress(&format!("{}.pk", n));
-            println!("\tVerifying key...");
-            let vk = decompress(&format!("{}.vk", n));
+    //     let ctx = {
+    //         println!("\tProving key...");
+    //         let pk = decompress(&format!("{}.pk", n));
+    //         println!("\tVerifying key...");
+    //         let vk = decompress(&format!("{}.vk", n));
 
-            println!("\tDeserializing...");
+    //         println!("\tDeserializing...");
 
-            get_context(&pk, &vk, n)
-        };
+    //         get_context(&pk, &vk, n)
+    //     };
 
-        let listener = TcpListener::bind("0.0.0.0:25519").unwrap();
-        println!("Opened listener. Instruct client to connect.");
+    //     let listener = TcpListener::bind("0.0.0.0:25519").unwrap();
+    //     println!("Opened listener. Instruct client to connect.");
 
-        for stream in listener.incoming() {
-            match stream {
-                Ok(mut stream) => {
-                    handle_client(&mut stream, &ctx, n, &mut rpc);
-                },
-                Err(_) => {}
-            }
-        }
-    }
+    //     for stream in listener.incoming() {
+    //         match stream {
+    //             Ok(mut stream) => {
+    //                 handle_client(&mut stream, &ctx, n, &mut rpc);
+    //             },
+    //             Err(_) => {}
+    //         }
+    //     }
+    // }
 
     if let Some(ref matches) = matches.subcommand_matches("test") {
         println!("Loading proving/verifying keys...");
@@ -160,7 +160,7 @@ fn main() {
             get_context(&pk, &vk, n)
         };
 
-        loop {
+        // loop {
             println!("Generating puzzle...");
             let puzzle = Sudoku::gen(n);
             println!("Solving puzzle...");
@@ -175,175 +175,182 @@ fn main() {
             println!("Generating proof...");
 
             assert!(prove(&ctx, &puzzle, &solution, &key, &h_of_key,
-              |encrypted_solution, proof| {}));
-        }
+              |encrypted_solution, proof| {
+                let encrypted_solution = Cow::Borrowed(encrypted_solution);
+                let proof = Cow::Borrowed(proof);
+
+                if verify(&ctx, &proof, &puzzle, &h_of_key, &encrypted_solution) {
+                    println!("Proof verified!");
+                }
+              }));
+        // }
     }
 }
 
-fn handle_client(stream: &mut TcpStream, ctx: &Context, n: usize, rpc: &mut jsonrpc::client::Client) -> Result<(), ProtoError> {
-    println!("Connected!");
+// fn handle_client(stream: &mut TcpStream, ctx: &Context, n: usize, rpc: &mut jsonrpc::client::Client) -> Result<(), ProtoError> {
+//     println!("Connected!");
 
-    println!("Generating puzzle...");
-    let puzzle = Sudoku::gen(n);
+//     println!("Generating puzzle...");
+//     let puzzle = Sudoku::gen(n);
 
-    print_sudoku(n*n, &puzzle);
+//     print_sudoku(n*n, &puzzle);
 
-    println!("Sending to the client.");
+//     println!("Sending to the client.");
 
-    try!(serialize_into(stream, &puzzle, Infinite));
+//     try!(serialize_into(stream, &puzzle, Infinite));
 
-    println!("Waiting for proof that the client has a solution...");
+//     println!("Waiting for proof that the client has a solution...");
 
-    let proof: Cow<[u8]> = try!(deserialize_from(stream, Infinite));
-    let encrypted_solution: Cow<[u8]> = try!(deserialize_from(stream, Infinite));
-    let mut encrypted_solution: Vec<u8> = encrypted_solution.into_owned();
-    let mut h_of_key: Vec<u8> = try!(deserialize_from(stream, Infinite));
+//     let proof: Cow<[u8]> = try!(deserialize_from(stream, Infinite));
+//     let encrypted_solution: Cow<[u8]> = try!(deserialize_from(stream, Infinite));
+//     let mut encrypted_solution: Vec<u8> = encrypted_solution.into_owned();
+//     let mut h_of_key: Vec<u8> = try!(deserialize_from(stream, Infinite));
 
-    println!("Verifying proof.");
+//     println!("Verifying proof.");
 
-    if verify(ctx, &proof, &puzzle, &h_of_key, &encrypted_solution) {
-        println!("Proof verified!");
+//     if verify(ctx, &proof, &puzzle, &h_of_key, &encrypted_solution) {
+//         println!("Proof verified!");
 
-        let redeem_pubkey: String = bitcoin::getpubkey(rpc);
-        let cltv_height: usize = bitcoin::getheight(rpc) + 100; // 100 blocks from now we can get a refund
-        let h_of_key_str: String = h_of_key.to_hex();
+//         let redeem_pubkey: String = bitcoin::getpubkey(rpc);
+//         let cltv_height: usize = bitcoin::getheight(rpc) + 100; // 100 blocks from now we can get a refund
+//         let h_of_key_str: String = h_of_key.to_hex();
 
-        // send these details to the client so they can construct the same p2sh
+//         // send these details to the client so they can construct the same p2sh
 
-        try!(serialize_into(stream, &redeem_pubkey, Infinite));
-        try!(serialize_into(stream, &cltv_height, Infinite));
+//         try!(serialize_into(stream, &redeem_pubkey, Infinite));
+//         try!(serialize_into(stream, &cltv_height, Infinite));
 
-        let solving_pubkey: String = try!(deserialize_from(stream, Infinite));
+//         let solving_pubkey: String = try!(deserialize_from(stream, Infinite));
 
-        let p2sh = bitcoin::p2sh(rpc, &solving_pubkey, &redeem_pubkey, &h_of_key_str, cltv_height);
+//         let p2sh = bitcoin::p2sh(rpc, &solving_pubkey, &redeem_pubkey, &h_of_key_str, cltv_height);
 
-        // send money
-        bitcoin::pay_for_sudoku(rpc, &p2sh);
+//         // send money
+//         bitcoin::pay_for_sudoku(rpc, &p2sh);
 
-        println!("Money was sent for the solution, waiting to get the key from the blockchain...");
+//         println!("Money was sent for the solution, waiting to get the key from the blockchain...");
 
-        loop {
-            if let Some(preimage) = bitcoin::get_preimage(rpc, &h_of_key) {
-                println!("Atomic swap confirmed, decrypting encrypted solution...");
-                decrypt(ctx, &mut encrypted_solution, &preimage);
+//         loop {
+//             if let Some(preimage) = bitcoin::get_preimage(rpc, &h_of_key) {
+//                 println!("Atomic swap confirmed, decrypting encrypted solution...");
+//                 decrypt(ctx, &mut encrypted_solution, &preimage);
 
-                println!("Decrypted solution:");
-                print_sudoku(n*n, &encrypted_solution);
+//                 println!("Decrypted solution:");
+//                 print_sudoku(n*n, &encrypted_solution);
 
-                break;
-            }
+//                 break;
+//             }
 
-            std::thread::sleep(std::time::Duration::from_secs(1));
-        }
+//             std::thread::sleep(std::time::Duration::from_secs(1));
+//         }
 
-        return Ok(());
-    }
+//         return Ok(());
+//     }
 
-    println!("Proof invalid!");
+//     println!("Proof invalid!");
 
-    Err(ProtoError)
-}
+//     Err(ProtoError)
+// }
 
-fn handle_server(stream: &mut TcpStream, ctx: &Context, n: usize, rpc: &mut jsonrpc::client::Client) -> Result<(), ProtoError> {
-    println!("Waiting for server to give us a puzzle...");
-    let puzzle: Vec<u8> = deserialize_from(stream, Infinite).unwrap();
+// fn handle_server(stream: &mut TcpStream, ctx: &Context, n: usize, rpc: &mut jsonrpc::client::Client) -> Result<(), ProtoError> {
+//     println!("Waiting for server to give us a puzzle...");
+//     let puzzle: Vec<u8> = deserialize_from(stream, Infinite).unwrap();
 
-    println!("Received puzzle:");
-    print_sudoku(n*n, &puzzle);
+//     println!("Received puzzle:");
+//     print_sudoku(n*n, &puzzle);
 
-    println!("Solving puzzle...");
-    let solution: Vec<u8> = Sudoku::import_and_solve(n, &puzzle).unwrap();
-    print_sudoku(n*n, &solution);
+//     println!("Solving puzzle...");
+//     let solution: Vec<u8> = Sudoku::import_and_solve(n, &puzzle).unwrap();
+//     print_sudoku(n*n, &solution);
 
-    let mut rng = thread_rng();
-    let key = (0..32).map(|_| rng.gen()).collect::<Vec<u8>>();
-    let mut h_of_key: Vec<u8> = (0..32).map(|_| 0).collect();
-    {
-        let mut hash = Sha256::new();
-        hash.input(&key);
-        hash.result(&mut h_of_key);
-    }
+//     let mut rng = thread_rng();
+//     let key = (0..32).map(|_| rng.gen()).collect::<Vec<u8>>();
+//     let mut h_of_key: Vec<u8> = (0..32).map(|_| 0).collect();
+//     {
+//         let mut hash = Sha256::new();
+//         hash.input(&key);
+//         hash.result(&mut h_of_key);
+//     }
     
-    println!("Generating proof...");
+//     println!("Generating proof...");
 
-    assert!(prove(ctx, &puzzle, &solution, &key, &h_of_key, |encrypted_solution, proof| {
-        println!("Sending proof, encrypted_solution and h_of_key to the server.");
+//     assert!(prove(ctx, &puzzle, &solution, &key, &h_of_key, |encrypted_solution, proof| {
+//         println!("Sending proof, encrypted_solution and h_of_key to the server.");
 
-        let encrypted_solution = Cow::Borrowed(encrypted_solution);
-        let proof = Cow::Borrowed(proof);
+//         let encrypted_solution = Cow::Borrowed(encrypted_solution);
+//         let proof = Cow::Borrowed(proof);
 
-        serialize_into(stream, &proof, Infinite);
-        serialize_into(stream, &encrypted_solution, Infinite);
-        serialize_into(stream, &h_of_key, Infinite);
+//         serialize_into(stream, &proof, Infinite);
+//         serialize_into(stream, &encrypted_solution, Infinite);
+//         serialize_into(stream, &h_of_key, Infinite);
 
-        let h_of_key: String = h_of_key.to_hex();
+//         let h_of_key: String = h_of_key.to_hex();
 
-        let redeem_pubkey: String = deserialize_from(stream, Infinite).unwrap();
-        let cltv_height: usize = deserialize_from(stream, Infinite).unwrap();
+//         let redeem_pubkey: String = deserialize_from(stream, Infinite).unwrap();
+//         let cltv_height: usize = deserialize_from(stream, Infinite).unwrap();
 
-        let solving_pubkey = bitcoin::getpubkey(rpc);
+//         let solving_pubkey = bitcoin::getpubkey(rpc);
 
-        let p2sh = bitcoin::p2sh(rpc, &solving_pubkey, &redeem_pubkey, &h_of_key, cltv_height);
+//         let p2sh = bitcoin::p2sh(rpc, &solving_pubkey, &redeem_pubkey, &h_of_key, cltv_height);
 
-        serialize_into(stream, &solving_pubkey, Infinite);
+//         serialize_into(stream, &solving_pubkey, Infinite);
 
-        {
-            let (tx, rx) = channel();
-            let rx = Arc::new(Mutex::new(rx));
+//         {
+//             let (tx, rx) = channel();
+//             let rx = Arc::new(Mutex::new(rx));
 
-            unsafe {
-                let derp = scoped(|| {
-                    let mut old_confirmations: isize = -1;
+//             unsafe {
+//                 let derp = scoped(|| {
+//                     let mut old_confirmations: isize = -1;
 
-                    loop {
-                        let mut confirmations: isize = -1;
-                        bitcoin::poll_for_payment(rpc, &p2sh, &mut confirmations);
+//                     loop {
+//                         let mut confirmations: isize = -1;
+//                         bitcoin::poll_for_payment(rpc, &p2sh, &mut confirmations);
 
-                        if confirmations != old_confirmations {
-                            old_confirmations = confirmations;
+//                         if confirmations != old_confirmations {
+//                             old_confirmations = confirmations;
 
-                            println!("I have {} confirmations.", confirmations);
-                        }
+//                             println!("I have {} confirmations.", confirmations);
+//                         }
 
-                        std::thread::sleep(std::time::Duration::from_secs(1));
+//                         std::thread::sleep(std::time::Duration::from_secs(1));
 
-                        if (rx.lock().unwrap().try_recv().is_ok()) {
-                            break;
-                        }
-                    }
-                });
+//                         if (rx.lock().unwrap().try_recv().is_ok()) {
+//                             break;
+//                         }
+//                     }
+//                 });
 
-                prompt::<String>("Press enter when ready to spend.\n");
-                tx.send(());
+//                 prompt::<String>("Press enter when ready to spend.\n");
+//                 tx.send(());
 
-                drop(derp);
-            }
-        }
+//                 drop(derp);
+//             }
+//         }
 
-        let mut txid;
-        let mut vout;
+//         let mut txid;
+//         let mut vout;
 
-        loop {
-            if let Some((_txid, _vout)) = bitcoin::poll_for_payment(rpc, &p2sh, &mut 0) {
-                txid = _txid;
-                vout = _vout;
-                break;
-            }
+//         loop {
+//             if let Some((_txid, _vout)) = bitcoin::poll_for_payment(rpc, &p2sh, &mut 0) {
+//                 txid = _txid;
+//                 vout = _vout;
+//                 break;
+//             }
 
-            std::thread::sleep(std::time::Duration::from_secs(1));
-        }
+//             std::thread::sleep(std::time::Duration::from_secs(1));
+//         }
 
-        let key: String = key.to_hex();
+//         let key: String = key.to_hex();
 
-        println!("Received payment for puzzle in txid {}", txid);
+//         println!("Received payment for puzzle in txid {}", txid);
 
-        let txid = bitcoin::solve_sudoku(rpc, &key, &txid, vout);
+//         let txid = bitcoin::solve_sudoku(rpc, &key, &txid, vout);
 
-        println!("Exchanged sudoku solution for money in txid {}", txid);
-    }));
+//         println!("Exchanged sudoku solution for money in txid {}", txid);
+//     }));
 
-    Ok(())
-}
+//     Ok(())
+// }
 
 struct ProtoError;
 
