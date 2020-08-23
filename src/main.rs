@@ -183,12 +183,12 @@ fn main() {
             let mut solution: Vec<u8> = vec![0u8; len];
             rng.fill_bytes(&mut solution[..]);
            
-            // println!("solution: {:?}", solution);
+            println!("solution: {:?}", solution);
             // println!("size of solution: {:?}", mem::size_of_val(&solution[0])*solution.len());
             
-            // 32 bytes
+            // 256 bits的root key
             let key = vec![206, 64, 25, 10, 245, 205, 246, 107, 191, 157, 114, 181, 63, 40, 95, 134, 6, 178, 210, 43, 243, 10, 217, 251, 246, 248, 0, 21, 86, 194, 100, 94];
-            // 32 bytes
+            // 256 bits的key的hash
             let h_of_key = vec![253, 199, 66, 55, 24, 155, 80, 121, 138, 60, 36, 201, 186, 221, 164, 65, 194, 53, 192, 159, 252, 7, 194, 24, 200, 217, 57, 55, 45, 204, 71, 9];
 
             println!("Generating proof...");
@@ -199,9 +199,10 @@ fn main() {
             let start = Instant::now();
             // assert!(prove(&ctx, &puzzle, &solution, &key, &h_of_key,
             assert!(prove(&ctx, &solution, &key, &h_of_key,
-              |encrypted_solution, proof| {
+              |mut encrypted_solution, proof| {
                 prove_time += start.elapsed();
-                let encrypted_solution = Cow::Borrowed(encrypted_solution);
+                // let encrypted_solution = Cow::Borrowed(encrypted_solution);
+                let mut encrypted_solution: Vec<u8> = encrypted_solution.to_owned();
                 // println!("len of encrypted_solution: {:?}", encrypted_solution.len());
                 let proof = Cow::Borrowed(proof);
 
@@ -210,6 +211,13 @@ fn main() {
                 assert!(verify(&ctx, len, &proof, &h_of_key, &encrypted_solution)); //{
                 verify_time += start.elapsed();
                 println!("Proof verified!");
+
+                println!("Atomic swap confirmed, decrypting encrypted solution...");
+                // 使用key解密
+                decrypt(len, &mut encrypted_solution, &key);
+                assert_eq!(solution, encrypted_solution);
+                println!("decrypted solution: {:?}", encrypted_solution);
+
                 println!("prove_time: {:?}", prove_time);
                 println!("verify_time: {:?}", verify_time);
                 //}

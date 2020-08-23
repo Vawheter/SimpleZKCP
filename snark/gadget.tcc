@@ -8,7 +8,10 @@ sudoku_encryption_key<FieldT>::sudoku_encryption_key(protoboard<FieldT> &pb,
 {
     assert(seed_key.size() == (256-8));
     // unsigned int num_key_digests = div_ceil(dimension * dimension * 8, 256);
+    // 需要hash产生key的数量（key总长度len*8 bits，每个hash为256bits）
     unsigned int num_key_digests = div_ceil(len * 8, 256);
+    std::cout << "num_key_digests" << num_key_digests << std::endl;
+    // 因为salt只有8bits，因此256个hash之后就会重复
     assert(num_key_digests < 256); // after this it will cycle
 
     padding_var.reset(new digest_variable<FieldT>(pb, 256, "padding"));
@@ -171,7 +174,8 @@ sudoku_gadget<FieldT>::sudoku_gadget(protoboard<FieldT> &pb, unsigned int soluti
     len = solution_len;
 
     // assert(dimension < 256); // any more will overflow the 8 bit storage
-    assert(len < 256*256);
+    // 在数独场景中，超过256维的话，8-bit存不下数独元素
+    // assert(len < 256*256);
 
     // const size_t input_size_in_bits = (2 * (dimension * dimension * 8)) + /* H(K) */ 256;
     // const size_t input_size_in_bits = (2 * (len * 8)) + /* H(K) */ 256;
@@ -319,10 +323,14 @@ void sudoku_gadget<FieldT>::generate_r1cs_constraints()
     // encrypted solution check
     unsigned int sha_i = 0;
 
+
+
     // for (unsigned int x = 0; x < dimension*dimension; x++) {
     for (unsigned int x = 0; x < len; x++) {
         for (unsigned int y = 0; y < 8; y++) {
             // This is the constraint that encrypted solution = solution ^ key.
+            // key->key[(sha_i / 256)]->bits[(sha_i % 256)]，内索引256，外索引num_key_digests，外循环len*8，因此len*8=256*num_key_digests，len=32*num_key_digests
+            // key总长度len*8
             this->pb.add_r1cs_constraint(
                 r1cs_constraint<FieldT>(
                     { solution_values[x][y] * 2 }, // 2*b

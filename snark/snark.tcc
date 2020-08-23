@@ -28,7 +28,7 @@ std::vector<uint8_t> convertBoolToPuzzle(std::vector<std::vector<bool>> bool_puz
 std::vector<std::vector<bool>> xorSolution(const std::vector<std::vector<bool>> &solution, const std::vector<bool> &key)
 {
     // input key is 256 bits
-    // 32-byte key
+    // key为256bits
     assert(key.size() == 256);
 
     // this is the final key after PRNG
@@ -39,10 +39,12 @@ std::vector<std::vector<bool>> xorSolution(const std::vector<std::vector<bool>> 
     std::vector<bool> cropped_key(key.begin(), key.begin() + (256-8));
 
     unsigned int i = 0;
+    // 将key扩展到solution.size()*8的长度，因为一共solution.size()*8 bits
     while (extended_key.size() < (solution.size() * 8)) {
       // construct the final key after adding the counter or "salt"
       std::vector<bool> finished_key(cropped_key);
       // construct the salt
+      // CTR模式，后面的salt依次递增
       std::vector<bool> salt = convertIntToVector(i);
       assert(salt.size() == 8);
       finished_key.insert(finished_key.end(), salt.begin(), salt.end());
