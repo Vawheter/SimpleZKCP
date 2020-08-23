@@ -46,8 +46,8 @@ fn is_number(val: String) -> Result<(), String> {
     match n {
         Err(_) => Err("`n` must be a number".into()),
         Ok(n) => {
-            if n == 0 || n > 9 {
-                Err("0 < n < n".into())
+            if n == 0 || n > 256*256 {//9 {
+                Err("0 < n < 65536".into())
             } else {
                 Ok(())
             }
@@ -202,6 +202,7 @@ fn main() {
               |encrypted_solution, proof| {
                 prove_time += start.elapsed();
                 let encrypted_solution = Cow::Borrowed(encrypted_solution);
+                // println!("len of encrypted_solution: {:?}", encrypted_solution.len());
                 let proof = Cow::Borrowed(proof);
 
                 let start = Instant::now();

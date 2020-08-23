@@ -42,11 +42,13 @@ pub fn initialize() {
     unsafe { mysnark_init_public_params(); }
 }
 
-extern "C" fn handle_proof_callback(cb: *mut c_void, n: uint32_t, encrypted_solution: *const uint8_t, proof: *const c_char, proof_len: int32_t)
+// 处理回调函数
+extern "C" fn handle_proof_callback(cb: *mut c_void, len: uint32_t, encrypted_solution: *const uint8_t, proof: *const c_char, proof_len: int32_t)//n
 {
     unsafe {
         let proof: &[i8] = mem::transmute(slice::from_raw_parts(proof, proof_len as usize));
-        let enc_solution: &[u8] = mem::transmute(slice::from_raw_parts(encrypted_solution, (n*n*n*n) as usize));
+        // let enc_solution: &[u8] = mem::transmute(slice::from_raw_parts(encrypted_solution, (n*n*n*n) as usize));
+        let enc_solution: &[u8] = mem::transmute(slice::from_raw_parts(encrypted_solution, len as usize));
 
         let closure: &mut &mut for<'a> FnMut(&'a [u8], &'a [i8]) = mem::transmute(cb);
 
@@ -93,15 +95,16 @@ pub fn get_context(pk: &[u8], vk: &[u8], n: usize) -> Context {
 
 //pub fn prove<F: for<'a> FnMut(&'a [u8], &'a [u8])>(ctx: &Context, puzzle: &[u8], solution: &[u8], key: &[u8], h_of_key: &[u8], mut f: F) -> bool {
 pub fn prove<F: for<'a> FnMut(&'a [u8], &'a [u8])>(ctx: &Context, solution: &[u8], key: &[u8], h_of_key: &[u8], mut f: F) -> bool { 
+    // 回调函数
     let mut cb: &mut for<'a> FnMut(&'a [u8], &'a [u8]) = &mut f;
 
     // let cells = ctx.n.pow(4);
     // assert_eq!(puzzle.len(), cells);
-    // assert_eq!(solution.len(), cells);
     assert_eq!(key.len(), 32);
     assert_eq!(h_of_key.len(), 32);
 
     let len = solution.len();
+    // println!("len of solution: {:?}", len);
 
     // println!("before gen_proof in ffi.rs");
     
@@ -131,7 +134,7 @@ pub fn verify(ctx: &Context, len: usize, proof: &[u8], h_of_key: &[u8], encrypte
 {
     // assert_eq!(ctx.n.pow(4), encrypted_solution.len());
     // assert_eq!(ctx.n.pow(4), puzzle.len());
-    assert_eq!(len*8, encrypted_solution.len());
+    assert_eq!(len, encrypted_solution.len());
     assert_eq!(h_of_key.len(), 32);
 
     // let len = encrypted_solution.len();

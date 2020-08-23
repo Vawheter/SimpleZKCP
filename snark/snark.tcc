@@ -128,8 +128,13 @@ boost::optional<std::tuple<r1cs_ppzksnark_proof<ppzksnark_ppT>,std::vector<std::
     g.generate_r1cs_constraints();
 
     // auto new_puzzle = convertPuzzleToBool(puzzle);
+    // std::cout << "len of solution: " <<  solution.size() << std::endl;
+
     auto new_solution = convertPuzzleToBool(solution);
     auto encrypted_solution = xorSolution(new_solution, key);
+
+    // std::cout << "len of encrypted_solution: " <<  encrypted_solution.size() << std::endl;
+
 
     // g.generate_r1cs_witness(new_puzzle, new_solution, key, h_of_key, encrypted_solution);
     g.generate_r1cs_witness(new_solution, key, h_of_key, encrypted_solution);

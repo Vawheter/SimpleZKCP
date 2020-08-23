@@ -98,8 +98,10 @@ extern "C" bool gen_proof(void *keypair, void* h, proof_callback cb, uint32_t le
     } else {
         auto actual_proof = std::get<0>(*proof);
         auto encrypted_solution = std::get<1>(*proof);
-
+        // std::cout << "len of encrypted_solution: " <<  encrypted_solution.size() << std::endl;
+        
         auto encrypted_solution_formatted = convertBoolToPuzzle(encrypted_solution);
+        // std::cout << "len of encrypted_solution_formatted: " <<  encrypted_solution_formatted.size() << std::endl;
         std::string proof_serialized;
         {
             std::stringstream ss;
