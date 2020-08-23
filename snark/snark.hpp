@@ -87,19 +87,19 @@ r1cs_ppzksnark_keypair<ppzksnark_ppT> generate_keypair();
 
 template<typename ppzksnark_ppT>
 boost::optional<std::tuple<r1cs_ppzksnark_proof<ppzksnark_ppT>,std::vector<std::vector<bool>>>>
-  generate_proof(uint32_t n,
+  generate_proof(uint32_t len,//n,
                  r1cs_ppzksnark_proving_key<ppzksnark_ppT> proving_key,
-                 std::vector<uint8_t> &puzzle,
+                //  std::vector<uint8_t> &puzzle,
                  std::vector<uint8_t> &solution,
                  std::vector<bool> &key,
                  std::vector<bool> &h_of_key
                  );
 
 template<typename ppzksnark_ppT>
-bool verify_proof(uint32_t n,
+bool verify_proof(uint32_t len,//n,
                   r1cs_ppzksnark_verification_key<ppzksnark_ppT> verification_key,
                   r1cs_ppzksnark_proof<ppzksnark_ppT> proof,
-                  std::vector<uint8_t> &puzzle,
+                //   std::vector<uint8_t> &puzzle,
                   std::vector<bool> &h_of_key,
                   std::vector<std::vector<bool>> &encrypted_solution
                  );

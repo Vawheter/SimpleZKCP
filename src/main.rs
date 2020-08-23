@@ -1,4 +1,5 @@
 #![feature(test)]
+#![allow(unused_imports)]
 
 extern crate whiteread;
 extern crate libc;
@@ -17,7 +18,7 @@ extern crate crypto;
 use std::net::{TcpListener,TcpStream};
 use std::io::{self, Read, Write};
 use self::ffi::*;
-use self::sudoku::Sudoku;
+// use self::sudoku::Sudoku;
 use self::util::*;
 // use bincode::serde::{serialize_into, deserialize_from};
 // use bincode::SizeLimit::Infinite;
@@ -31,10 +32,13 @@ use thread_scoped::scoped;
 use crypto::digest::Digest;
 use std::sync::{Arc,Mutex};
 
-mod sudoku;
+// mod sudoku;
 mod ffi;
 mod util;
 // mod bitcoin;
+
+use std::time::{Duration, Instant};
+use std::mem;
 
 fn is_number(val: String) -> Result<(), String> {
     let n = val.parse::<usize>();
@@ -86,6 +90,7 @@ fn main() {
     if let Some(ref matches) = matches.subcommand_matches("gen") {
         let n: usize = matches.value_of("n").unwrap().parse().unwrap();
 
+        // println!("begin generate_keypair...");
         generate_keypair(n, |pk, vk| {
             println!("Serialized proving key size in bytes: {}", pk.len());
             println!("Serialized verifying key size in bytes: {}", vk.len());
@@ -161,27 +166,52 @@ fn main() {
         };
 
         // loop {
-            println!("Generating puzzle...");
-            let puzzle = Sudoku::gen(n);
-            println!("Solving puzzle...");
-            let solution = Sudoku::import_and_solve(n, &puzzle).unwrap();
+            // println!("Generating puzzle...");
+            // let puzzle = Sudoku::gen(n);
+            //print_sudoku(n*n, &puzzle);
+            //println!("puzzle: {:?}", puzzle);
+            //println!("Solving puzzle...");
+            //let solution = Sudoku::import_and_solve(n, &puzzle).unwrap();
 
-            let puzzle: Vec<u8> = puzzle.into_iter().map(|x| x as u8).collect();
-            let solution: Vec<u8> = solution.into_iter().map(|x| x as u8).collect();
+            // let puzzle: Vec<u8> = puzzle.into_iter().map(|x| x as u8).collect();
+            //let solution: Vec<u8> = solution.into_iter().map(|x| x as u8).collect();
 
+            // let len = n.pow(4);
+            let len:usize = n;
+            let mut rng = rand::thread_rng();
+            // let solution: Vec<u8> = (0..len).into_iter().map(|_| rng.gen_range(1,10) as u8).collect();
+            let mut solution: Vec<u8> = vec![0u8; len];
+            rng.fill_bytes(&mut solution[..]);
+           
+            // println!("solution: {:?}", solution);
+            // println!("size of solution: {:?}", mem::size_of_val(&solution[0])*solution.len());
+            
+            // 32 bytes
             let key = vec![206, 64, 25, 10, 245, 205, 246, 107, 191, 157, 114, 181, 63, 40, 95, 134, 6, 178, 210, 43, 243, 10, 217, 251, 246, 248, 0, 21, 86, 194, 100, 94];
+            // 32 bytes
             let h_of_key = vec![253, 199, 66, 55, 24, 155, 80, 121, 138, 60, 36, 201, 186, 221, 164, 65, 194, 53, 192, 159, 252, 7, 194, 24, 200, 217, 57, 55, 45, 204, 71, 9];
 
             println!("Generating proof...");
 
-            assert!(prove(&ctx, &puzzle, &solution, &key, &h_of_key,
+            let mut prove_time = Duration::new(0, 0);
+            let mut verify_time = Duration::new(0, 0);
+
+            let start = Instant::now();
+            // assert!(prove(&ctx, &puzzle, &solution, &key, &h_of_key,
+            assert!(prove(&ctx, &solution, &key, &h_of_key,
               |encrypted_solution, proof| {
+                prove_time += start.elapsed();
                 let encrypted_solution = Cow::Borrowed(encrypted_solution);
                 let proof = Cow::Borrowed(proof);
 
-                if verify(&ctx, &proof, &puzzle, &h_of_key, &encrypted_solution) {
-                    println!("Proof verified!");
-                }
+                let start = Instant::now();
+                // if verify(&ctx, &proof, &puzzle, &h_of_key, &encrypted_solution) {
+                assert!(verify(&ctx, len, &proof, &h_of_key, &encrypted_solution)); //{
+                verify_time += start.elapsed();
+                println!("Proof verified!");
+                println!("prove_time: {:?}", prove_time);
+                println!("verify_time: {:?}", verify_time);
+                //}
               }));
         // }
     }

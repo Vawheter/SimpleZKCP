@@ -4,20 +4,23 @@
 typedef void (*keypair_callback)(void*, const char*, size_t, const char*, size_t);
 typedef void (*proof_callback)(void*, uint32_t, const uint8_t*, const char*, int32_t);
 
-extern "C" void decrypt_solution(uint32_t n, uint8_t *enc, unsigned char* key) {
-    uint32_t cells = n*n*n*n;
+// extern "C" void decrypt_solution(uint32_t n, uint8_t *enc, unsigned char* key) {
+extern "C" void decrypt_solution(uint32_t len, uint8_t *enc, unsigned char* key) {
+    // uint32_t cells = n*n*n*n;
 
     std::vector<unsigned char> key_bv(key, key+32);
     std::vector<bool> key_v;
     convertBytesVectorToVector(key_bv, key_v);
 
-    std::vector<uint8_t> enc_solution(enc, enc+(n*n*n*n));
+    // std::vector<uint8_t> enc_solution(enc, enc+(n*n*n*n));
+    std::vector<uint8_t> enc_solution(enc, enc+len);
     auto enc_solution_bool = convertPuzzleToBool(enc_solution);
 
     auto dec_solution_bool = xorSolution(enc_solution_bool, key_v);
     auto dec_solution = convertBoolToPuzzle(dec_solution_bool);
 
-    for (uint32_t i = 0; i < cells; i++) {
+    // for (uint32_t i = 0; i < cells; i++) {
+    for (uint32_t i = 0; i < len; i++) {
         enc[i] = dec_solution[i];
     }
 }
@@ -28,8 +31,9 @@ extern "C" void mysnark_init_public_params() {
     default_r1cs_ppzksnark_pp::init_public_params();
 }
 
-extern "C" void gen_keypair(uint32_t n, void* h, keypair_callback cb) {
-    auto keypair = generate_keypair<default_r1cs_ppzksnark_pp>(n);
+// extern "C" void gen_keypair(uint32_t n, void* h, keypair_callback cb) {
+extern "C" void gen_keypair(uint32_t len, void* h, keypair_callback cb) {
+    auto keypair = generate_keypair<default_r1cs_ppzksnark_pp>(len);
 
     std::stringstream provingKey;
     provingKey << keypair.pk;
@@ -65,11 +69,15 @@ extern "C" void* load_keypair(const char* pk_s, int32_t pk_l, const char* vk_s, 
     return reinterpret_cast<void*>(new r1cs_ppzksnark_keypair<default_r1cs_ppzksnark_pp>(std::move(pk), std::move(vk)));
 }
 
-extern "C" bool gen_proof(void *keypair, void* h, proof_callback cb, uint32_t n, uint8_t* puzzle, uint8_t* solution, uint8_t* input_key, uint8_t* input_h_of_key) {
+// extern "C" bool gen_proof(void *keypair, void* h, proof_callback cb, uint32_t n, uint8_t* puzzle, uint8_t* solution, uint8_t* input_key, uint8_t* input_h_of_key) {
+extern "C" bool gen_proof(void *keypair, void* h, proof_callback cb, uint32_t len, uint8_t* solution, uint8_t* input_key, uint8_t* input_h_of_key) {
+    // std::cout << "in gen_proof in lib.cpp\n";
+    
     auto our_keypair = reinterpret_cast<r1cs_ppzksnark_keypair<default_r1cs_ppzksnark_pp>*>(keypair);
 
-    vector<uint8_t> new_puzzle(puzzle, puzzle+(n*n*n*n));
-    vector<uint8_t> new_solution(solution, solution+(n*n*n*n));
+    // vector<uint8_t> new_puzzle(puzzle, puzzle+(n*n*n*n));
+    // vector<uint8_t> new_solution(solution, solution+(n*n*n*n));
+    vector<uint8_t> new_solution(solution, solution+len);
 
     vector<unsigned char> v_input_key(input_key, input_key+32);
     vector<unsigned char> v_input_h_of_key(input_h_of_key, input_h_of_key+32);
@@ -80,9 +88,12 @@ extern "C" bool gen_proof(void *keypair, void* h, proof_callback cb, uint32_t n,
     convertBytesVectorToVector(v_input_key, key);
     convertBytesVectorToVector(v_input_h_of_key, h_of_key);
 
-    auto proof = generate_proof<default_r1cs_ppzksnark_pp>(n, our_keypair->pk, new_puzzle, new_solution, key, h_of_key);
+    // auto proof = generate_proof<default_r1cs_ppzksnark_pp>(n, our_keypair->pk, new_puzzle, new_solution, key, h_of_key);
+    // printf("before generate_proof in gen_proof\n");
+    auto proof = generate_proof<default_r1cs_ppzksnark_pp>(len, our_keypair->pk, new_solution, key, h_of_key);
 
     if (!proof) {
+        // printf("wrong in gen_proof in lib.cpp\n");
         return false;
     } else {
         auto actual_proof = std::get<0>(*proof);
@@ -96,29 +107,31 @@ extern "C" bool gen_proof(void *keypair, void* h, proof_callback cb, uint32_t n,
             proof_serialized = ss.str();
         }
 
-        assert(verify_proof(n, our_keypair->vk, actual_proof, new_puzzle, h_of_key, encrypted_solution));
-
+        // assert(verify_proof(n, our_keypair->vk, actual_proof, new_puzzle, h_of_key, encrypted_solution));
+        assert(verify_proof(len, our_keypair->vk, actual_proof, h_of_key, encrypted_solution));
+        // std::cout << "after verify_proof in lib.cpp" << std::endl;
 
         // ok
-        cb(h, n, &encrypted_solution_formatted[0], proof_serialized.c_str(), proof_serialized.length());
+        cb(h, len, &encrypted_solution_formatted[0], proof_serialized.c_str(), proof_serialized.length());
 
         return true;
     }
 }
 
 extern "C" bool snark_verify(void *keypair,
-                             uint32_t n,
+                            //  uint32_t n,
+                             uint32_t len,
                              const char* proof,
                              int32_t proof_len,
-                             uint8_t* puzzle,
+                            //  uint8_t* puzzle,
                              uint8_t* input_h_of_key,
                              uint8_t* enc_solution
                              )
 {
     auto our_keypair = reinterpret_cast<r1cs_ppzksnark_keypair<default_r1cs_ppzksnark_pp>*>(keypair);
 
-    vector<uint8_t> new_puzzle(puzzle, puzzle+(n*n*n*n));
-    vector<uint8_t> encrypted_solution(enc_solution, enc_solution+(n*n*n*n));
+    // vector<uint8_t> new_puzzle(puzzle, puzzle+(n*n*n*n));
+    vector<uint8_t> encrypted_solution(enc_solution, enc_solution+len);
     vector<unsigned char> input_h_of_key_v(input_h_of_key, input_h_of_key+32);
 
     vector<bool> h_of_key;
@@ -133,5 +146,6 @@ extern "C" bool snark_verify(void *keypair,
 
     auto enc_sol_new = convertPuzzleToBool(encrypted_solution);
 
-    return verify_proof(n, our_keypair->vk, deserialized_proof, new_puzzle, h_of_key, enc_sol_new);
+    // return verify_proof(n, our_keypair->vk, deserialized_proof, new_puzzle, h_of_key, enc_sol_new);
+    return verify_proof(len, our_keypair->vk, deserialized_proof, h_of_key, enc_sol_new);
 }

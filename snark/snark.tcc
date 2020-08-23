@@ -28,6 +28,7 @@ std::vector<uint8_t> convertBoolToPuzzle(std::vector<std::vector<bool>> bool_puz
 std::vector<std::vector<bool>> xorSolution(const std::vector<std::vector<bool>> &solution, const std::vector<bool> &key)
 {
     // input key is 256 bits
+    // 32-byte key
     assert(key.size() == 256);
 
     // this is the final key after PRNG
@@ -90,25 +91,31 @@ std::vector<std::vector<bool>> xorSolution(const std::vector<std::vector<bool>> 
 }
 
 template<typename ppzksnark_ppT>
-r1cs_ppzksnark_keypair<ppzksnark_ppT> generate_keypair(uint32_t n)
+r1cs_ppzksnark_keypair<ppzksnark_ppT> generate_keypair(uint32_t len)//n)
 {
+    // std::cout << "in generate_keypair in snark.tcc" << std::endl;
     typedef Fr<ppzksnark_ppT> FieldT;
 
     protoboard<FieldT> pb;
-    sudoku_gadget<FieldT> g(pb, n);
+    // sudoku_gadget<FieldT> g(pb, n);
+    // std::cout << "building sudoku_gadget in snark.tcc" << std::endl;
+    sudoku_gadget<FieldT> g(pb, len);
+
+    // std::cout << "calling generate_r1cs_constraints in snark.tcc" << std::endl;
     g.generate_r1cs_constraints();
     const r1cs_constraint_system<FieldT> constraint_system = pb.get_constraint_system();
 
     cout << "Number of R1CS constraints: " << constraint_system.num_constraints() << endl;
 
+    // std::cout << "calling r1cs_ppzksnark_generator in snark.tcc" << std::endl;
     return r1cs_ppzksnark_generator<ppzksnark_ppT>(constraint_system);
 }
 
 template<typename ppzksnark_ppT>
 boost::optional<std::tuple<r1cs_ppzksnark_proof<ppzksnark_ppT>,std::vector<std::vector<bool>>>>
-  generate_proof(uint32_t n,
+  generate_proof(uint32_t len,
                  r1cs_ppzksnark_proving_key<ppzksnark_ppT> proving_key,
-                 vector<uint8_t> &puzzle,
+                //  vector<uint8_t> &puzzle,
                  vector<uint8_t> &solution,
                  vector<bool> &key,
                  vector<bool> &h_of_key
@@ -117,14 +124,16 @@ boost::optional<std::tuple<r1cs_ppzksnark_proof<ppzksnark_ppT>,std::vector<std::
     typedef Fr<ppzksnark_ppT> FieldT;
 
     protoboard<FieldT> pb;
-    sudoku_gadget<FieldT> g(pb, n);
+    sudoku_gadget<FieldT> g(pb, len);
     g.generate_r1cs_constraints();
 
-    auto new_puzzle = convertPuzzleToBool(puzzle);
+    // auto new_puzzle = convertPuzzleToBool(puzzle);
     auto new_solution = convertPuzzleToBool(solution);
     auto encrypted_solution = xorSolution(new_solution, key);
 
-    g.generate_r1cs_witness(new_puzzle, new_solution, key, h_of_key, encrypted_solution);
+    // g.generate_r1cs_witness(new_puzzle, new_solution, key, h_of_key, encrypted_solution);
+    g.generate_r1cs_witness(new_solution, key, h_of_key, encrypted_solution);
+
 
     if (!pb.is_satisfied()) {
         return boost::none;
@@ -137,19 +146,21 @@ boost::optional<std::tuple<r1cs_ppzksnark_proof<ppzksnark_ppT>,std::vector<std::
 }
 
 template<typename ppzksnark_ppT>
-bool verify_proof(uint32_t n,
+bool verify_proof(uint32_t len,//n,
                   r1cs_ppzksnark_verification_key<ppzksnark_ppT> verification_key,
                   r1cs_ppzksnark_proof<ppzksnark_ppT> proof,
-                  vector<uint8_t> &puzzle,
+                  // vector<uint8_t> &puzzle,
                   vector<bool> &h_of_key,
                   std::vector<std::vector<bool>> &encrypted_solution
                  )
 {
     typedef Fr<ppzksnark_ppT> FieldT;
 
-    auto new_puzzle = convertPuzzleToBool(puzzle);
+    // auto new_puzzle = convertPuzzleToBool(puzzle);
 
-    const r1cs_primary_input<FieldT> input = sudoku_input_map<FieldT>(n, new_puzzle, h_of_key, encrypted_solution);
+    // const r1cs_primary_input<FieldT> input = sudoku_input_map<FieldT>(n, new_puzzle, h_of_key, encrypted_solution);
+    const r1cs_primary_input<FieldT> input = sudoku_input_map<FieldT>(len, h_of_key, encrypted_solution);
+
 
     return r1cs_ppzksnark_verifier_strong_IC<ppzksnark_ppT>(verification_key, input, proof);
 }

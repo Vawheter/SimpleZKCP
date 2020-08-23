@@ -148,7 +148,7 @@ version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c47df1b38f927ecf55959e25455dc7af4b3699cf1b6e0aac870a1d8cccab7804"
 dependencies = [
- "libc 0.2.2",
+ "libc 0.2.74",
  "miniz-sys",
 ]
 
@@ -186,9 +186,9 @@ checksum = "e32a70cf75e5846d53a673923498228bbec6a8624708a9ea5645f075d6276122"
 
 [[package]]
 name = "libc"
-version = "0.2.2"
+version = "0.2.74"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9fe40c82db71d8e4db6910989256d407abc151586aa10b8bce68bf84108af5ce"
+checksum = "a2f02823cf78b754822df5f7f268fb59822e7296276d3e069d8e8cb26a14bd10"
 
 [[package]]
 name = "miniz-sys"
@@ -197,7 +197,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9d1f4d337a01c32e1f2122510fed46393d53ca35a7f429cb0450abaedfa3ed54"
 dependencies = [
  "gcc",
- "libc 0.2.2",
+ "libc 0.2.74",
 ]
 
 [[package]]
@@ -220,7 +220,7 @@ dependencies = [
  "fixedbitset",
  "flate2",
  "hex",
- "libc 0.2.2",
+ "libc 0.2.74",
  "rand",
  "rust-crypto",
  "serde",
@@ -236,7 +236,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5eee40bdf3d293e1648490ab47e5471d9ab3e455e6b0bd48e558c454be4a015e"
 dependencies = [
  "advapi32-sys",
- "libc 0.2.2",
+ "libc 0.2.74",
  "winapi",
 ]
 
@@ -297,7 +297,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8c4aeaa1c95974f5763c3a5ac0db95a19793589bcea5d22e161b5587e3aad029"
 dependencies = [
  "kernel32-sys",
- "libc 0.2.2",
+ "libc 0.2.74",
  "winapi",
 ]
 
