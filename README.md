@@ -1,4 +1,4 @@
-ZKCP protocol with only prover and verifier. Forked from https://github.com/zcash-hackworks/pay-to-sudoku.
+ZKCP protocol with only encrypting data and hashing secret key. Forked from https://github.com/zcash-hackworks/pay-to-sudoku.
 
 # pay-to-sudoku
 
@@ -15,7 +15,7 @@ payment for paying someone to solve a sudoku puzzle.
 ```
 ./get-libsnark
 make
-cargo run gen 2 # generate circuit for 2^2 x 2^2 puzzle
+cargo run gen 2 # generate circuit for selling 2-byte data
 cargo run test 2 # test the proofs
 ```
 
