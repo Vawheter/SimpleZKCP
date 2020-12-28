@@ -6,15 +6,29 @@ version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "307c92332867e586720c0222ee9d890bbe8431711efed8a1b06bc5b40fc66bd7"
 dependencies = [
- "winapi",
+ "winapi 0.2.5",
  "winapi-build",
 ]
 
 [[package]]
 name = "ansi_term"
-version = "0.7.1"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5ceef0658413e88fcfb96aeeb69711e83326b9ca0d8c2efd82a4b8f365b3ca72"
+checksum = "ee49baf6cb617b853aa8d93bf420db2383fab46d314482ca2803b40d5fde979b"
+dependencies = [
+ "winapi 0.3.9",
+]
+
+[[package]]
+name = "atty"
+version = "0.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf377614828a319d5fee8"
+dependencies = [
+ "hermit-abi",
+ "libc 0.2.81",
+ "winapi 0.3.9",
+]
 
 [[package]]
 name = "bincode"
@@ -30,9 +44,9 @@ dependencies = [
 
 [[package]]
 name = "bitflags"
-version = "0.3.3"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "32866f4d103c4e438b1db1158aa1b1a80ee078e5d77a59a2f906fd62a577389c"
+checksum = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
 
 [[package]]
 name = "byteorder"
@@ -62,13 +76,16 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "1.5.4"
+version = "2.33.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d6ec074a65245b18a2baabe43ed2dc69798dcef1344a0a8997563cd8a533baa0"
+checksum = "37e58ac78573c40708d45522f0d80fa2f01cc4f9b4e2bf749807255454312002"
 dependencies = [
  "ansi_term",
+ "atty",
  "bitflags",
  "strsim",
+ "textwrap",
+ "unicode-width",
  "vec_map",
 ]
 
@@ -148,7 +165,7 @@ version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c47df1b38f927ecf55959e25455dc7af4b3699cf1b6e0aac870a1d8cccab7804"
 dependencies = [
- "libc 0.2.2",
+ "libc 0.2.81",
  "miniz-sys",
 ]
 
@@ -159,7 +176,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca10e3e1f1c8278047da19b94dc17c4397861150d5fbcea052eedb1d9847d356"
 dependencies = [
  "advapi32-sys",
- "winapi",
+ "winapi 0.2.5",
+]
+
+[[package]]
+name = "hermit-abi"
+version = "0.1.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5aca5565f760fb5b220e499d72710ed156fdb74e631659e99377d9ebfbd13ae8"
+dependencies = [
+ "libc 0.2.81",
 ]
 
 [[package]]
@@ -174,7 +200,7 @@ version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b5b5e7edf375e6d26243bde172f1d5ed1446f4a766fc9b7006e1fd27258243f1"
 dependencies = [
- "winapi",
+ "winapi 0.2.5",
  "winapi-build",
 ]
 
@@ -186,9 +212,9 @@ checksum = "e32a70cf75e5846d53a673923498228bbec6a8624708a9ea5645f075d6276122"
 
 [[package]]
 name = "libc"
-version = "0.2.2"
+version = "0.2.81"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9fe40c82db71d8e4db6910989256d407abc151586aa10b8bce68bf84108af5ce"
+checksum = "1482821306169ec4d07f6aca392a4681f66c75c9918aa49641a2595db64053cb"
 
 [[package]]
 name = "miniz-sys"
@@ -197,7 +223,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9d1f4d337a01c32e1f2122510fed46393d53ca35a7f429cb0450abaedfa3ed54"
 dependencies = [
  "gcc",
- "libc 0.2.2",
+ "libc 0.2.81",
 ]
 
 [[package]]
@@ -220,7 +246,7 @@ dependencies = [
  "fixedbitset",
  "flate2",
  "hex",
- "libc 0.2.2",
+ "libc 0.2.81",
  "rand",
  "rust-crypto",
  "serde",
@@ -236,8 +262,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5eee40bdf3d293e1648490ab47e5471d9ab3e455e6b0bd48e558c454be4a015e"
 dependencies = [
  "advapi32-sys",
- "libc 0.2.2",
- "winapi",
+ "libc 0.2.81",
+ "winapi 0.2.5",
 ]
 
 [[package]]
@@ -255,9 +281,9 @@ dependencies = [
 
 [[package]]
 name = "rustc-serialize"
-version = "0.3.16"
+version = "0.3.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a48546a64cae47d06885e9bccadb99d0547d877a94c5167fa451ea33a484456"
+checksum = "dcf128d1287d2ea9d80910b5f1120d0b8eede3fbf1abe91c40d39ea7d51e6fda"
 
 [[package]]
 name = "serde"
@@ -280,9 +306,18 @@ dependencies = [
 
 [[package]]
 name = "strsim"
-version = "0.4.0"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1d6a2200349ab2221a712c79e797cbb814086eea4ad5d12cc5cafab5f2089d9"
+checksum = "8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a"
+
+[[package]]
+name = "textwrap"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060"
+dependencies = [
+ "unicode-width",
+]
 
 [[package]]
 name = "thread-scoped"
@@ -297,15 +332,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8c4aeaa1c95974f5763c3a5ac0db95a19793589bcea5d22e161b5587e3aad029"
 dependencies = [
  "kernel32-sys",
- "libc 0.2.2",
- "winapi",
+ "libc 0.2.81",
+ "winapi 0.2.5",
 ]
 
 [[package]]
-name = "vec_map"
-version = "0.4.0"
+name = "unicode-width"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1805118a0d7c72d427e9d9c8134b549ec9e88942c707b100deef357ec0948f02"
+checksum = "9337591893a19b88d8d87f2cec1e73fad5cdfd10e5a6f349f498ad6ea2ffb1e3"
+
+[[package]]
+name = "vec_map"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1bddf1187be692e79c5ffeab891132dfb0f236ed36a43c7ed39f1165ee20191"
 
 [[package]]
 name = "whiteread"
@@ -320,7 +361,29 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc3583688b861fcd83c2823d37cf2cd2446c233dd7ba3f97884d1a7302817537"
 
 [[package]]
+name = "winapi"
+version = "0.3.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c839a674fcd7a98952e593242ea400abe93992746761e38641405d28b00f419"
+dependencies = [
+ "winapi-i686-pc-windows-gnu",
+ "winapi-x86_64-pc-windows-gnu",
+]
+
+[[package]]
 name = "winapi-build"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2d315eee3b34aca4797b2da6b13ed88266e6d612562a0c46390af8299fc699bc"
+
+[[package]]
+name = "winapi-i686-pc-windows-gnu"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
+
+[[package]]
+name = "winapi-x86_64-pc-windows-gnu"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
