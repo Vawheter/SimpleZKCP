@@ -18,7 +18,7 @@ extern crate crypto;
 use std::net::{TcpListener,TcpStream};
 use std::io::{self, Read, Write};
 use self::ffi::*;
-// use self::sudoku::Sudoku;
+use self::sudoku::Sudoku;
 use self::util::*;
 // use bincode::serde::{serialize_into, deserialize_from};
 // use bincode::SizeLimit::Infinite;
@@ -32,7 +32,7 @@ use thread_scoped::scoped;
 use crypto::digest::Digest;
 use std::sync::{Arc,Mutex};
 
-// mod sudoku;
+mod sudoku;
 mod ffi;
 mod util;
 // mod bitcoin;
@@ -73,6 +73,12 @@ fn main() {
                                    .required(true)
                                    .validator(is_number))
                    )
+                   .subcommand(SubCommand::with_name("generate_sudoku")
+                              .about("generate a sudoku")
+                              .arg(Arg::with_name("n")
+                                   .required(true)
+                                   .validator(is_number))
+                   )
                 //   .subcommand(SubCommand::with_name("serve")
                 //               .about("Opens a server for paying people to solve sudoku puzzles")
                 //               .arg(Arg::with_name("n")
@@ -100,6 +106,21 @@ fn main() {
             write_compressed(&format!("{}.pk", n), &pk);
             write_compressed(&format!("{}.vk", n), &vk);
         });
+    }
+
+    if let Some(ref matches) = matches.subcommand_matches("generate_sudoku") {
+        let n: usize = matches.value_of("n").unwrap().parse().unwrap();
+
+        println!("Generating puzzle...");
+        let puzzle = Sudoku::gen(n);
+        print_sudoku(n*n, &puzzle);
+        // println!("puzzle: {:?}", puzzle);
+        // println!("Solving puzzle...");
+        // let solution = Sudoku::import_and_solve(n, &puzzle).unwrap();
+
+        // let puzzle: Vec<u8> = puzzle.into_iter().map(|x| x as u8).collect();
+        // let solution: Vec<u8> = solution.into_iter().map(|x| x as u8).collect();
+       
     }
 
     // if let Some(ref matches) = matches.subcommand_matches("client") {

@@ -8,18 +8,18 @@ use std::fs;
 use flate2::write::{ZlibEncoder, ZlibDecoder};
 use flate2::Compression;
 
-// pub fn print_sudoku(dim: usize, grid: &[u8]) {
-//     for y in 0..dim {
-//         for x in 0..dim {
-//             print!("{:02}", grid[y*dim + x]);
-//             if x != (dim-1) || y != (dim-1) {
-//                 print!(" ");
-//             }
-//         }
-//         println!("");
-//     }
-//     println!("");
-// }
+pub fn print_sudoku(dim: usize, grid: &[u8]) {
+    for y in 0..dim {
+        for x in 0..dim {
+            print!("{:02}", grid[y*dim + x]);
+            if x != (dim-1) || y != (dim-1) {
+                print!(" ");
+            }
+        }
+        println!("");
+    }
+    println!("");
+}
 
 pub fn prompt<T: whiteread::White>(prompt: &str) -> Option<T> {
     print!("{}", prompt);
