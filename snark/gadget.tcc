@@ -7,7 +7,7 @@ sudoku_encryption_key<FieldT>::sudoku_encryption_key(protoboard<FieldT> &pb,
 {
     assert(seed_key.size() == (256-8));
     unsigned int num_key_digests = div_ceil(dimension * dimension * 8, 256);
-    assert(num_key_digests < 256); // after this it will cycle
+    //assert(num_key_digests < 256); // after this it will cycle
 
     padding_var.reset(new digest_variable<FieldT>(pb, 256, "padding"));
 
@@ -164,7 +164,7 @@ sudoku_gadget<FieldT>::sudoku_gadget(protoboard<FieldT> &pb, unsigned int n) :
 {
     dimension = n * n;
 
-    assert(dimension < 256); // any more will overflow the 8 bit storage
+    //assert(dimension < 256); // any more will overflow the 8 bit storage
 
     const size_t input_size_in_bits = (2 * (dimension * dimension * 8)) + /* H(K) */ 256;
     {

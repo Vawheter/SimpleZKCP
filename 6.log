@@ -1,0 +1,23 @@
+Loading proving/verifying keys...
+	Proving key...
+	Verifying key...
+	Deserializing...
+Generating proof...
+Proof verified!
+prove_time: 61.095993501s
+verify_time: 28.108857ms
+* Elements of w skipped: 442643 (52.45%)
+* Elements of w processed with special addition: 378679 (44.87%)
+* Elements of w remaining: 22638 (2.68%)
+* Elements of w skipped: 385630 (54.43%)
+* Elements of w processed with special addition: 322922 (45.57%)
+* Elements of w remaining: 0 (0.00%)
+* Elements of w skipped: 523360 (51.92%)
+* Elements of w processed with special addition: 448842 (44.53%)
+* Elements of w remaining: 35825 (3.55%)
+* Elements of w skipped: 586610 (51.82%)
+* Elements of w processed with special addition: 509560 (45.01%)
+* Elements of w remaining: 35825 (3.16%)
+* G1 elements in proof: 7
+* G2 elements in proof: 1
+* Proof size in bits: 2294

@@ -1,0 +1,41 @@
+Number of R1CS constraints: 2448337
+Serialized proving key size in bytes: 1688342991
+Serialized verifying key size in bytes: 14020
+Storing...
+* QAP number of variables: 2107643
+* QAP pre degree: 2448337
+* QAP degree: 2621440
+* QAP number of input variables: 153
+* G1 window: 20
+* G2 window: 17
+* G1 elements in PK: 15267313
+* Non-zero G1 elements in PK: 12980322
+* G2 elements in PK: 2107645
+* Non-zero G2 elements in PK: 1331332
+* PK size in bits: 4294272210
+* G1 elements in VK: 155
+* G2 elements in VK: 5
+* VK size in bits: 52117
+Loading proving/verifying keys...
+	Proving key...
+	Verifying key...
+	Deserializing...
+Generating proof...
+Proof verified!
+prove_time: 122.887134279s
+verify_time: 35.034648ms
+* Elements of w skipped: 842490 (53.34%)
+* Elements of w processed with special addition: 695585 (44.04%)
+* Elements of w remaining: 41503 (2.63%)
+* Elements of w skipped: 737385 (55.39%)
+* Elements of w processed with special addition: 593945 (44.61%)
+* Elements of w remaining: 0 (0.00%)
+* Elements of w skipped: 990914 (52.70%)
+* Elements of w processed with special addition: 823776 (43.81%)
+* Elements of w remaining: 65680 (3.49%)
+* Elements of w skipped: 1106003 (52.48%)
+* Elements of w processed with special addition: 935960 (44.41%)
+* Elements of w remaining: 65680 (3.12%)
+* G1 elements in proof: 7
+* G2 elements in proof: 1
+* Proof size in bits: 2294

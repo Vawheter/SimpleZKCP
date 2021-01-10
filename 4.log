@@ -1,0 +1,65 @@
+Number of R1CS constraints: 266594
+* QAP number of variables: 236522
+* QAP pre degree: 266594
+* QAP degree: 270336
+* QAP number of input variables: 18
+* G1 window: 17
+* G2 window: 15
+* G1 elements in PK: 1689483
+* Non-zero G1 elements in PK: 1422163
+* G2 elements in PK: 236524
+* Non-zero G2 elements in PK: 145786
+* PK size in bits: 470811391
+* G1 elements in VK: 20
+* G2 elements in VK: 5
+* VK size in bits: 9052
+Serialized proving key size in bytes: 182974883
+Serialized verifying key size in bytes: 2561
+Storing...
+
+Loading proving/verifying keys...
+	Proving key...
+	Verifying key...
+	Deserializing...
+Generating proof...
+Proof verified!
+prove_time: 12.400239349s
+verify_time: 22.163177ms
+* Elements of w skipped: 89682 (51.31%)
+* Elements of w processed with special addition: 80267 (45.92%)
+* Elements of w remaining: 4851 (2.78%)
+* Elements of w skipped: 77025 (52.84%)
+* Elements of w processed with special addition: 68759 (47.16%)
+* Elements of w remaining: 0 (0.00%)
+* Elements of w skipped: 106759 (50.85%)
+* Elements of w processed with special addition: 95518 (45.49%)
+* Elements of w remaining: 7677 (3.66%)
+* Elements of w skipped: 120440 (50.92%)
+* Elements of w processed with special addition: 108405 (45.83%)
+* Elements of w remaining: 7677 (3.25%)
+* G1 elements in proof: 7
+* G2 elements in proof: 1
+* Proof size in bits: 2294
+Loading proving/verifying keys...
+	Proving key...
+	Verifying key...
+	Deserializing...
+Generating proof...
+Proof verified!
+prove_time: 12.958358538s
+verify_time: 21.448841ms
+* Elements of w skipped: 89652 (51.29%)
+* Elements of w processed with special addition: 80297 (45.94%)
+* Elements of w remaining: 4851 (2.78%)
+* Elements of w skipped: 76995 (52.81%)
+* Elements of w processed with special addition: 68789 (47.19%)
+* Elements of w remaining: 0 (0.00%)
+* Elements of w skipped: 106759 (50.85%)
+* Elements of w processed with special addition: 95518 (45.49%)
+* Elements of w remaining: 7677 (3.66%)
+* Elements of w skipped: 120410 (50.91%)
+* Elements of w processed with special addition: 108435 (45.85%)
+* Elements of w remaining: 7677 (3.25%)
+* G1 elements in proof: 7
+* G2 elements in proof: 1
+* Proof size in bits: 2294

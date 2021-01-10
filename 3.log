@@ -1,0 +1,45 @@
+Loading proving/verifying keys...
+	Proving key...
+	Verifying key...
+	Deserializing...
+Generating proof...
+* Elements of w skipped: 38257 (50.30%)
+* Elements of w processed with special addition: 35645 (46.87%)
+* Elements of w remaining: 2156 (2.83%)
+* Elements of w skipped: 32766 (51.88%)
+* Elements of w processed with special addition: 30396 (48.12%)
+* Elements of w remaining: 0 (0.00%)
+* Elements of w skipped: 45955 (50.12%)
+* Elements of w processed with special addition: 42330 (46.16%)
+* Elements of w remaining: 3411 (3.72%)
+* Elements of w skipped: 51936 (50.19%)
+* Elements of w processed with special addition: 48142 (46.52%)
+* Elements of w remaining: 3411 (3.30%)
+* G1 elements in proof: 7
+* G2 elements in proof: 1
+* Proof size in bits: 2294
+Proof verified!
+prove_time: 5.341497414s
+verify_time: 20.399366msLoading proving/verifying keys...
+	Proving key...
+	Verifying key...
+	Deserializing...
+Generating proof...
+Proof verified!
+prove_time: 5.350351513s
+verify_time: 20.538278ms
+* Elements of w skipped: 38235 (50.27%)
+* Elements of w processed with special addition: 35667 (46.89%)
+* Elements of w remaining: 2156 (2.83%)
+* Elements of w skipped: 32744 (51.84%)
+* Elements of w processed with special addition: 30418 (48.16%)
+* Elements of w remaining: 0 (0.00%)
+* Elements of w skipped: 45955 (50.12%)
+* Elements of w processed with special addition: 42330 (46.16%)
+* Elements of w remaining: 3411 (3.72%)
+* Elements of w skipped: 51914 (50.16%)
+* Elements of w processed with special addition: 48164 (46.54%)
+* Elements of w remaining: 3411 (3.30%)
+* G1 elements in proof: 7
+* G2 elements in proof: 1
+* Proof size in bits: 2294
