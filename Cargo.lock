@@ -281,9 +281,9 @@ dependencies = [
 
 [[package]]
 name = "rustc-serialize"
-version = "0.3.16"
+version = "0.3.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a48546a64cae47d06885e9bccadb99d0547d877a94c5167fa451ea33a484456"
+checksum = "dcf128d1287d2ea9d80910b5f1120d0b8eede3fbf1abe91c40d39ea7d51e6fda"
 
 [[package]]
 name = "serde"

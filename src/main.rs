@@ -37,6 +37,10 @@ mod util;
 // mod bitcoin;
 
 use std::fs;
+<<<<<<< HEAD
+=======
+// use std::io::{self, Read};
+>>>>>>> f48eae818ae3f0f1763c3ba57b5b5003321a3371
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::time::{Duration, Instant};
@@ -48,6 +52,10 @@ fn is_number(val: String) -> Result<(), String> {
     match n {
         Err(_) => Err("`n` must be a number".into()),
         Ok(n) => {
+<<<<<<< HEAD
+=======
+            // if n == 0 || n > 9 {
+>>>>>>> f48eae818ae3f0f1763c3ba57b5b5003321a3371
             if n == 0 || n > 16 {
                 Err("0 < n < n".into())
             } else {
@@ -152,7 +160,7 @@ fn main() {
     // }
 
     if let Some(ref matches) = matches.subcommand_matches("test") {
-        println!("Loading proving/verifying keys...");
+        // println!("Loading proving/verifying keys...");
         let n: usize = matches.value_of("n").unwrap().parse().unwrap();
 
         let ctx = {
@@ -194,6 +202,32 @@ fn main() {
             //     puzzle[n1] = 0u8;
             // }
 
+            // println!("n:{}", n);
+
+            // let sudoku_file = format!("./{}.sudoku", n);
+            // let mut puzzle: Vec<u8> = vec![];
+            // let mut solution: Vec<u8> = vec![];
+
+            // let reader = BufReader::new(File::open(sudoku_file).expect("Cannot open file"));
+            // for line in reader.lines() {
+            //     for word in line.unwrap().split_whitespace() {
+            //         let num = word.parse::<u32>().unwrap();
+            //         puzzle.push(num as u8);
+            //         solution.push(num as u8);
+            //     }
+            // }
+
+            // for _ in 0..20 {
+            //     let mut rng = rand::thread_rng();
+            //     let n1: u8 = rng.gen_range(0, (n*n) as u8);
+            //     puzzle[n1 as usize] = 0u8;
+            // }
+
+            // println!("{:?}", puzzle);
+            
+            // print_sudoku(n*n, &puzzle);
+            print_sudoku(n*n, &solution);
+
             let key = vec![206, 64, 25, 10, 245, 205, 246, 107, 191, 157, 114, 181, 63, 40, 95, 134, 6, 178, 210, 43, 243, 10, 217, 251, 246, 248, 0, 21, 86, 194, 100, 94];
             let h_of_key = vec![253, 199, 66, 55, 24, 155, 80, 121, 138, 60, 36, 201, 186, 221, 164, 65, 194, 53, 192, 159, 252, 7, 194, 24, 200, 217, 57, 55, 45, 204, 71, 9];
 
@@ -202,6 +236,7 @@ fn main() {
             let start = Instant::now();
             assert!(prove(&ctx, &puzzle, &solution, &key, &h_of_key,
               |encrypted_solution, proof| {
+<<<<<<< HEAD
                 let prove_time = start.elapsed();
 
                 let encrypted_solution = Cow::Borrowed(encrypted_solution);
@@ -215,6 +250,21 @@ fn main() {
                     println!("prove_time: {:?}", prove_time);
                     println!("verify_time: {:?}", verify_time);
                 }
+=======
+                // let prove_time = start.elapsed();
+
+                // let encrypted_solution = Cow::Borrowed(encrypted_solution);
+                // let proof = Cow::Borrowed(proof);
+
+                // let start = Instant::now();
+                // if verify(&ctx, &proof, &puzzle, &h_of_key, &encrypted_solution) {
+                //     let verify_time = start.elapsed();
+                //     println!("Proof verified!");
+
+                //     println!("prove_time: {:?}", prove_time);
+                //     println!("verify_time: {:?}", verify_time);
+                // }
+>>>>>>> f48eae818ae3f0f1763c3ba57b5b5003321a3371
               }));
         // }
     }
